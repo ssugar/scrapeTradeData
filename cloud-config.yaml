@@ -5,7 +5,7 @@ ssh_authorized_keys:
 
 coreos:
   etcd2:
-    discovery: https://discovery.etcd.io/35da56542a1f1ae749d8391e4b637633
+    discovery: https://discovery.etcd.io/a9257cea03d0f46963d1ba1371d3ccbc
     advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
     initial-advertise-peer-urls: http://$private_ipv4:2380
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
