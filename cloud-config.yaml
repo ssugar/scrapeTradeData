@@ -1,17 +1,33 @@
 #cloud-config
 
+hostname: coreosX
+
 ssh_authorized_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA0THqibBAXnEr7jgE3Up/o+VZM8ItnpZWYdu601dqcxIPB1lG+/5h3fXwytZ1yvfZOnqIGOSmGVkfY2sk7PgJSRk2Rxhpj+LXt13fIkBEuZ8Wx5oEburxXYPHfxT1BOvVV+4Wdg6vcjl/8/HEcPapcIqxl2tNI8250aCPtoxgHrHTGcaJmpUaHvPY6Jkh5I4I05RphmDLZDho8yQpHyvoV0nQfRB1eHzXfeVTvIw2uCyZJNetmzGNz7woKtE3fwU9XAO1a1Xkfskybsj/nkRzkMHBRh48LeRlooBp63iMKoXiXA4hpgU1Do1DjbE3WgvlMHuLZLSVbOhQB/7ihKJdkw== rsa-key-20150915
 
 coreos:
   etcd2:
-    discovery: https://discovery.etcd.io/a9257cea03d0f46963d1ba1371d3ccbc
-    advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
-    initial-advertise-peer-urls: http://$private_ipv4:2380
+    discovery: https://discovery.etcd.io/52fed7705955dd63c42c427fc132924b
+    advertise-client-urls: http://10.10.10.201:2379,http://10.10.10.201:4001
+    initial-advertise-peer-urls: http://10.10.10.201:2380
     listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
-    listen-peer-urls: http://$private_ipv4:2380
+    listen-peer-urls: http://10.10.10.201:2380
   units:
     - name: etcd2.service
       command: start
     - name: fleet.service
       command: start
+
+write_files:
+    - path: /etc/systemd/network/static.network
+      permissions: 0644
+      content: |
+        [Match]
+        Name=eth0
+
+        [Network]
+        Address=10.10.10.201
+        Gateway=10.10.10.1
+        DNS=8.8.8.8
+        DNS=8.8.4.4
+		
